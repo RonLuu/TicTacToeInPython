@@ -4,7 +4,7 @@ WINDOW_SIZE = 600
 CIRCLE_IMAGE_PATH = "resource/Circle.png"
 CROSS_IMAGE_PATH = "resource/Cross.png"
 LINE_WIDTH = 10
-DISTANCE = (WINDOW_SIZE-2*LINE_WIDTH)//3
+DISTANCE = (WINDOW_SIZE-2*LINE_WIDTH)//3 # Distance between each line
 def center_window(window):
     window.update_idletasks()
     width = window.winfo_width()
@@ -37,9 +37,10 @@ class game_window:
         self.canvas.pack()
 
         # Draw the board
+        self.shape_list = []
         self.draw_shape(CIRCLE_IMAGE_PATH)
-        # self.draw_shape(CROSS_IMAGE_PATH)
-        self.draw_shape(CIRCLE_IMAGE_PATH, 1, 2)
+        self.draw_shape(CROSS_IMAGE_PATH)
+        self.draw_shape(CIRCLE_IMAGE_PATH, 2, 1)
         self.draw_board()
         self.canvas.pack()
         
@@ -57,8 +58,10 @@ class game_window:
                                          WINDOW_SIZE-off_set, LINE_WIDTH+i*DISTANCE,
                                          fill='gray69',outline="")
 
-    def draw_shape(self, filepath, x=1, y=1):        
-        self.shape = PhotoImage(file= filepath)
-        self.shape = self.shape.subsample(20)
+    def draw_shape(self, filepath, x=0, y=0):        
+        self.shape_list.append(PhotoImage(file= filepath).subsample(20))
         off_set = 10
-        self.canvas.create_image(x*DISTANCE//2+off_set,y*DISTANCE//2+off_set, image=self.shape)
+        x_distance = 2*x*(DISTANCE//2)+(off_set) + (DISTANCE//2) 
+        y_distance = 2*y*(DISTANCE//2)+(off_set) + (DISTANCE//2) 
+        print(f"{x_distance}, {y_distance}")
+        self.canvas.create_image(x_distance,y_distance, image=self.shape_list[-1])
