@@ -19,7 +19,7 @@ def printCoordinate(event):
     print(f"{str(event.x)},{str(event.y)}")
 
 
-class game_window:
+class GameWindow:
     def __init__(self):
         # Create the window
         self.root = Tk() 
