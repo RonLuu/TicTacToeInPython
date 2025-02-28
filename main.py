@@ -1,1 +1,4 @@
-print("Tic tac toe")
+from tictactoe import *
+
+# Initialise the game
+game = TicTacToe()
