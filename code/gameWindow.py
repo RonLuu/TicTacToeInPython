@@ -1,6 +1,10 @@
 from tkinter import *
 from tkinter.ttk import *
 WINDOW_SIZE = 600
+CIRCLE_IMAGE_PATH = "resource/Circle.png"
+CROSS_IMAGE_PATH = "resource/Cross.png"
+LINE_WIDTH = 10
+DISTANCE = (WINDOW_SIZE-2*LINE_WIDTH)//3
 def center_window(window):
     window.update_idletasks()
     width = window.winfo_width()
@@ -10,6 +14,10 @@ def center_window(window):
     x = (screen_width - width) // 2
     y = (screen_height - height) // 2
     window.geometry(f"{width}x{height}+{x}+{y}")
+
+def printCoordinate(event):
+    print(f"{str(event.x)},{str(event.y)}")
+
 
 class game_window:
     def __init__(self):
@@ -23,22 +31,34 @@ class game_window:
         center_window(self.root)
         # Set the color
         self.root.configure(background='gray24')
+        # Create a canvas
+        self.canvas = Canvas(self.root, bd = 1,highlightthickness=0, bg="gray24",
+                             height=WINDOW_SIZE, width=WINDOW_SIZE)
+        self.canvas.pack()
+
         # Draw the board
+        self.draw_shape(CIRCLE_IMAGE_PATH)
+        # self.draw_shape(CROSS_IMAGE_PATH)
+        self.draw_shape(CIRCLE_IMAGE_PATH, 1, 2)
         self.draw_board()
-
-        self.root.mainloop()
-    
-    def draw_board(self):
-        self.canvas = Canvas(self.root, bd = 1,highlightthickness=0, bg="gray24",height=WINDOW_SIZE, width=WINDOW_SIZE)
-        line_width = 10
-        off_set = 20
-        distance = (WINDOW_SIZE-2*line_width)//3
-
-
-        for i in range(1,3):
-            self.canvas.create_rectangle(i*distance, 0+off_set, line_width+i*distance, WINDOW_SIZE-off_set,fill='gray69',outline="")
-            self.canvas.create_rectangle(0+off_set, i*distance, WINDOW_SIZE-off_set, line_width+i*distance,fill='gray69',outline="")
-            
-
         self.canvas.pack()
         
+        self.root.bind("<Button-1>", printCoordinate)
+        
+        self.root.mainloop()
+
+    def draw_board(self):
+        off_set = 20
+        for i in range(1,3):
+            self.canvas.create_rectangle(i*DISTANCE, 0+off_set, 
+                                         LINE_WIDTH+i*DISTANCE, WINDOW_SIZE-off_set,
+                                         fill='gray69',outline="")
+            self.canvas.create_rectangle(0+off_set, i*DISTANCE, 
+                                         WINDOW_SIZE-off_set, LINE_WIDTH+i*DISTANCE,
+                                         fill='gray69',outline="")
+
+    def draw_shape(self, filepath, x=1, y=1):        
+        self.shape = PhotoImage(file= filepath)
+        self.shape = self.shape.subsample(20)
+        off_set = 10
+        self.canvas.create_image(x*DISTANCE//2+off_set,y*DISTANCE//2+off_set, image=self.shape)
