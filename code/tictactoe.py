@@ -5,7 +5,6 @@ class TicTacToe:
         print("In tic tac toe class")
         # Create the window of the game
         # self.window = GameWindow()
-        # TODO create the game logic
         self.logic = GameLogic()
         # TODO create the game engine
 
